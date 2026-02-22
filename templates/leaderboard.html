@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>🏆 Leaderboard</h2>
+    
+    <div style="margin: 20px 0;">
+        {% for leader in leaders %}
+        <div style="display: flex; align-items: center; padding: 10px; 
+                    border-bottom: 1px solid #eee; animation: slideIn 0.3s;
+                    animation-delay: {{ loop.index * 0.1 }}s;">
+            <div style="width: 30px; font-weight: bold; color: 
+                       {% if loop.index == 1 %}#FFD700
+                       {% elif loop.index == 2 %}#C0C0C0
+                       {% elif loop.index == 3 %}#CD7F32
+                       {% else %}#999{% endif %};">
+                #{{ loop.index }}
+            </div>
+            <div style="flex: 1; margin-left: 10px;">
+                <a href="/profile/{{ leader[0] }}" style="color: #333;">
+                    {{ leader[0] }}
+                </a>
+            </div>
+            <div style="font-weight: bold; color: #C4511A;">
+                {{ leader[1] }} pts
+            </div>
+            {% if leader[2] > 0 %}
+            <div style="margin-left: 10px; color: #FFC107;">
+                🔥 {{ leader[2] }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+</style>
+{% endblock %}

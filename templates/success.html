@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card reward-celebration">
+    <h2>🔥 @{{ username }}</h2>
+    
+    <div style="text-align: center; margin: 20px 0;">
+        <div style="font-size: 36px; animation: float 2s infinite;">
+            {% if points_earned > 1 %}🎯{% else %}🍟{% endif %}
+        </div>
+        <div style="font-size: 20px;">
+            +{{ points_earned }} point{% if points_earned > 1 %}s{% endif %} earned!
+        </div>
+    </div>
+    
+    {% if streak_message %}
+    <div style="background: #FFF3E0; padding: 10px; border-radius: 10px; 
+                margin: 15px 0; text-align: center; color: #C4511A;">
+        {{ streak_message }}
+    </div>
+    {% endif %}
+    
+    <p>You now have <span class="accent">{{ points }}</span> 🍟 stamps.</p>
+    
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: 0%;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+        <span>0</span>
+        <span>Next reward: {{ remaining }} more</span>
+        <span>10</span>
+    </div>
+    
+    {% if reward %}
+    <div style="text-align: center; margin: 20px 0; animation: shake 0.5s;">
+        <div style="font-size: 48px;">🎉</div>
+        <p class="accent" style="font-size: 24px;">FREE FRIES UNLOCKED!</p>
+        <p>Show this screen to any staff member</p>
+    </div>
+    {% endif %}
+    
+    {% if new_badges %}
+    <div style="margin: 20px 0;">
+        <h3>🏅 New Badges Earned!</h3>
+        {% for badge in new_badges %}
+        <div class="badge badge-gold" style="animation: pop 0.5s; margin: 5px;">
+            {{ badge.icon }} {{ badge.name }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <a href="/" style="flex: 1; text-align: center; padding: 10px; 
+                          background: #f0f0f0; border-radius: 10px;">
+            Home
+        </a>
+        <a href="/profile/{{ username }}" style="flex: 1; text-align: center; 
+                                                padding: 10px; background: #C4511A; 
+                                                color: white; border-radius: 10px;">
+            View Profile
+        </a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate progress bar
+    setTimeout(function() {
+        document.querySelector('.progress-fill').style.width = '{{ percent }}%';
+    }, 100);
+    
+    {% if reward %}
+    // Trigger confetti
+    if (typeof celebrateReward === 'function') {
+        celebrateReward();
+    }
+    {% endif %}
+});
+</script>
+{% endblock %}

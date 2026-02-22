@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>👤 {{ user.username }}</h2>
+    
+    <div style="text-align: center; margin: 20px 0;">
+        <div style="font-size: 48px;">🏆</div>
+        <div style="font-size: 24px; color: #C4511A;">Rank #{{ rank }}</div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+        <div style="text-align: center;">
+            <div style="font-size: 24px; font-weight: bold;">{{ user.total_points }}</div>
+            <div>Total Points</div>
+        </div>
+        <div style="text-align: center;">
+            <div style="font-size: 24px; font-weight: bold;">{{ user.streak_days }}</div>
+            <div>🔥 Streak</div>
+        </div>
+    </div>
+    
+    <h3>Badges Earned</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0;">
+        {% for badge in badges %}
+        <div class="badge badge-gold" style="animation: pop 0.5s;">
+            {{ badge.icon }} {{ badge.name }}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <a href="/leaderboard" style="display: block; text-align: center; margin-top: 20px;">
+        View Leaderboard
+    </a>
+</div>
+{% endblock %}
