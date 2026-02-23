@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stagger-children">
+    <!-- Hero Section -->
+    <div class="card" style="background: linear-gradient(135deg, var(--foreground), var(--primary)); color: white; border: none;">
+        <h1 style="color: white; margin-bottom: var(--spacing-sm);">Craze Rewards</h1>
+        <p style="opacity: 0.9; margin-bottom: var(--spacing-md);">Collect points with every order and earn free food!</p>
+        <div style="display: flex; gap: var(--spacing-sm);">
+            <span class="badge badge-secondary">🔥 2x Points Today</span>
+            <span class="badge badge-outline" style="color: white; border-color: white;">🎯 10 pts = Free Fries</span>
+        </div>
+    </div>
+
+    <!-- Points Summary (if logged in) -->
+    {% if session.username %}
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <div class="text-muted" style="font-size: 0.875rem;">Your Points</div>
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">150</div>
+            </div>
+            <div>
+                <div class="text-muted" style="font-size: 0.875rem;">Next Reward</div>
+                <div class="progress-container" style="width: 150px;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%;"></div>
+                    </div>
+                    <div style="font-size: 0.75rem; text-align: right; margin-top: 4px;">5 more pts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Category Filters -->
+    <div style="display: flex; gap: var(--spacing-sm); overflow-x: auto; padding: var(--spacing-xs) 0; margin: var(--spacing-lg) 0;">
+        <button class="badge badge-primary" style="padding: 8px 16px; cursor: pointer;">All</button>
+        <button class="badge badge-outline" style="padding: 8px 16px; cursor: pointer;">🍟 Fries</button>
+        <button class="badge badge-outline" style="padding: 8px 16px; cursor: pointer;">🍗 Chicken</button>
+        <button class="badge badge-outline" style="padding: 8px 16px; cursor: pointer;">🥤 Drinks</button>
+        <button class="badge badge-outline" style="padding: 8px 16px; cursor: pointer;">🔥 Combos</button>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid">
+        <!-- Items will be loaded dynamically via JavaScript -->
+    </div>
+</div>
+{% endblock %}

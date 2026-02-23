@@ -1,10 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card">
-    <h2>Welcome 🍟</h2>
-    <p>Join the club and start collecting stamps for free fries!</p>
-    <a href="/register">Register</a><br><br>
-    <a href="/claim">Claim Point</a>
+<div class="stagger-children">
+    <!-- Hero Card -->
+    <div class="card" style="background: linear-gradient(135deg, var(--foreground), var(--primary)); color: white; border: none; text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">🍟</div>
+        <h1 style="color: white; margin-bottom: var(--spacing-sm);">Welcome to CRAZE</h1>
+        <p style="opacity: 0.9; margin-bottom: var(--spacing-lg);">The crispiest fries & juiciest chicken in town</p>
+        
+        {% if session.username %}
+        <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
+            <a href="/menu" class="btn btn-secondary">Order Now</a>
+            <a href="/profile/{{ session.username }}" class="btn btn-outline" style="color: white; border-color: white;">My Profile</a>
+        </div>
+        {% else %}
+        <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
+            <a href="/register" class="btn btn-secondary">Join CRAZE</a>
+            <a href="/claim" class="btn btn-outline" style="color: white; border-color: white;">Claim Points</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Features Grid -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin: var(--spacing-xl) 0;">
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🎯</div>
+            <h4>Earn Points</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">10 points = free fries</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🔥</div>
+            <h4>Daily Streak</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">Bonus points for streaks</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🏆</div>
+            <h4>Leaderboard</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">Compete with friends</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: var(--spacing-sm);">🎁</div>
+            <h4>Rewards</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">Exclusive offers</p>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="card" style="text-align: center; background: var(--secondary); color: var(--foreground);">
+        <h3 style="margin-bottom: var(--spacing-md);">Ready to get CRAZY?</h3>
+        <p style="margin-bottom: var(--spacing-lg);">Join our loyalty program and start earning today!</p>
+        <a href="/register" class="btn btn-primary">Sign Up Now →</a>
+    </div>
 </div>
 {% endblock %}

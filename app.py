@@ -359,6 +359,61 @@ def generate_code():
     
     return {"code": new_code, "date": today}
 
+@app.route("/menu")
+def menu():
+    """Menu page with ordering system"""
+    return render_template("menu.html")
+
+@app.route('/api/add-stamp', methods=['POST'])
+def api_add_stamp():
+    """API endpoint for scanning QR codes"""
+    # Verify staff identity (simple PIN in request header)
+    staff_pin = request.headers.get('X-Staff-PIN')
+    if staff_pin != STAFF_PIN:
+        return {'error': 'Unauthorized'}, 401
+    
+    data = request.get_json()
+    card_id = data.get('card_id')  # This comes from QR code
+    
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM users WHERE id=?", (card_id,))
+    user = cursor.fetchone()
+    
+    if not user:
+        return {'error': 'User not found'}, 404
+    
+    # Add stamp
+    new_stamps = user['points'] + 1
+    total_points = user['total_points'] + 1
+    reward = False
+    
+    if new_stamps >= 10:
+        reward = True
+        new_stamps = 0
+    
+    cursor.execute("""
+        UPDATE users 
+        SET points=?, total_points=?, last_claim_date=?
+        WHERE id=?
+    """, (new_stamps, total_points, datetime.now().strftime('%Y-%m-%d'), card_id))
+    conn.commit()
+    
+    # Get updated user info
+    cursor.execute("SELECT username, points FROM users WHERE id=?", (card_id,))
+    updated = cursor.fetchone()
+    conn.close()
+    
+    return {
+        'success': True,
+        'username': updated['username'],
+        'stamps': updated['points'],
+        'reward': reward,
+        'remaining': 10 - updated['points']
+    }
+
 @app.route("/login", methods=["POST"])
 def login():
     """Simple login endpoint for existing users"""

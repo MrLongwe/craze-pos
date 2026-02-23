@@ -1,101 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Fries Club</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #FFFFFF;
-            color: #333;
-        }
-
-        .header {
-            background-color: #C4511A;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 400px;
-            margin: auto;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: #C4511A;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #a63f14;
-        }
-
-        .accent {
-            color: #FFC107;
-            font-weight: bold;
-        }
-
-        .progress-bar {
-            background-color: #eee;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 12px;
-            margin-top: 10px;
-        }
-
-        .progress-fill {
-            background-color: #C4511A;
-            height: 100%;
-        }
-
-        a {
-            color: #C4511A;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CRAZE — Fries & Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <!-- CRAZE Logo SVG -->
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 26c-6.627 0-12-5.373-12-12S9.373 4 16 4s12 5.373 12 12-5.373 12-12 12z" fill="currentColor"/>
+                    <path d="M16 6c-5.523 0-10 4.477-10 10s4.477 10 10 10 10-4.477 10-10-4.477-10-10-10zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" fill="currentColor"/>
+                    <circle cx="16" cy="16" r="4" fill="var(--secondary)"/>
+                </svg>
+                <span>CRAZE</span>
+            </a>
+            
+            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                {% if session.username %}
+                <a href="/profile/{{ session.username }}" style="color: white; text-decoration: none; font-weight: 500;">
+                    {{ session.username }}
+                </a>
+                {% endif %}
+                
+                <!-- Cart Icon -->
+                <button class="cart-icon" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-<div class="header">
-    🍟 Fries Club
-</div>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Delivery/Pickup Toggle -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" onclick="setMode('delivery')">🚚 Delivery</button>
+            <button class="toggle-btn" onclick="setMode('pickup')">🏃 Pickup</button>
+        </div>
 
-<div class="container">
-    {% block content %}{% endblock %}
-</div>
+        {% block content %}{% endblock %}
+    </main>
 
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">
+                Checkout → 
+                <span style="font-size: 0.875rem; opacity: 0.8;" id="pointsEarned">(+10 pts)</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
